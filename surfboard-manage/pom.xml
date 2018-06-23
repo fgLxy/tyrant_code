@@ -88,7 +88,7 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<tyrant.version>0.0.1-SNAPSHOT</tyrant.version>
-		<weixin-java-tool.version>3.0.0</weixin-java-tool.version>
+		<weixin-java-tool.version>3.1.0</weixin-java-tool.version>
 	</properties>
 	<build>
 		<plugins>
