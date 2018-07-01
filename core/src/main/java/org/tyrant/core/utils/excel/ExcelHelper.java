@@ -1,12 +1,14 @@
 package org.tyrant.core.utils.excel;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.springframework.util.StringUtils;
 
 public class ExcelHelper<DTO> {
 
@@ -15,6 +17,8 @@ public class ExcelHelper<DTO> {
 	private ExcelDataSource<DTO> dataSource;
 
 	private Integer pageSize;
+	
+	private Properties localProperties;
 
 	private static Integer SHEET_MAX_ROW = 1048576;
 	
@@ -22,6 +26,10 @@ public class ExcelHelper<DTO> {
 		this.headers = headers;
 		this.dataSource = dataSource;
 		this.pageSize = pageSize;
+	}
+	
+	public void setProperties(Properties localProperties) {
+		this.localProperties = localProperties;
 	}
 	
 	public SXSSFWorkbook exportExcel2007(String title) {
@@ -37,7 +45,8 @@ public class ExcelHelper<DTO> {
 		currentRow = createRow(currentSheet, currentRowCount++);
 		for (int i = 0; i < headers.size(); i++) {
 			Cell cell = currentRow.createCell(i);
-			cell.setCellValue(headers.get(i).getTitle());
+			String cellTitle = getHeadTitle(headers.get(i).getTitle());
+			cell.setCellValue(cellTitle);
 		}
 		while (true) {
 			datas = dataSource.getDataList(current, pageSize);
@@ -59,6 +68,14 @@ public class ExcelHelper<DTO> {
 		}
 	}
 
+	private String getHeadTitle(String title) {
+		String cellTitle = title;
+		if (localProperties != null) {
+			cellTitle = localProperties.getProperty(cellTitle);
+		}
+		return StringUtils.isEmpty(cellTitle) ? title : cellTitle;
+	}
+
 	public HSSFWorkbook exportExcel2003(String title) {
 		if (dataSource == null || headers == null || pageSize <= 0) {
 			return null;
@@ -72,7 +89,8 @@ public class ExcelHelper<DTO> {
 		currentRow = createRow(currentSheet, currentRowCount++);
 		for (int i = 0; i < headers.size(); i++) {
 			Cell cell = currentRow.createCell(i);
-			cell.setCellValue(headers.get(i).getTitle());
+			String cellTitle = getHeadTitle(headers.get(i).getTitle());
+			cell.setCellValue(cellTitle);
 		}
 		while (true) {
 			datas = dataSource.getDataList(current, pageSize);

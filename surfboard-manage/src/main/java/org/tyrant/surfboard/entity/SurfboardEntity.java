@@ -4,36 +4,62 @@ import org.tyrant.core.utils.excel.ExcelColumn;
 import org.tyrant.dao.BaseEntity;
 
 public class SurfboardEntity implements BaseEntity {
-	@ExcelColumn(title = "ID", columnIndex = 1)
+	@ExcelColumn(title = "id", columnIndex = 1)
 	private String id;
-	@ExcelColumn(title = "状态", columnIndex = 2)
-	private String status;
-	@ExcelColumn(title = "录入时间", columnIndex = 3)
-	private String createTime;
-	@ExcelColumn(title = "最后更新时间", columnIndex = 4)
-	private String updateTime;
+	@ExcelColumn(title = "name", columnIndex = 1)
+	private String name;
+	@ExcelColumn(title = "type", columnIndex = 1)
+	private String type;
+	@ExcelColumn(title = "size", columnIndex = 1)
+	private String size;
+	@ExcelColumn(title = "num", columnIndex = 1)
+	private String num;
+	@ExcelColumn(title = "productionDate", columnIndex = 1)
+	private String productionDate;
+	@ExcelColumn(title = "storage", columnIndex = 1)
+	private String storage;
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getStatus() {
-		return status;
+	public String getName() {
+		return name;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getCreateTime() {
-		return createTime;
+	public String getType() {
+		return type;
 	}
-	public void setCreateTime(String createTime) {
-		this.createTime = createTime;
+	public void setType(String type) {
+		this.type = type;
 	}
-	public String getUpdateTime() {
-		return updateTime;
+	public String getSize() {
+		return size;
 	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
+	public void setSize(String size) {
+		this.size = size;
 	}
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
+	public String getProductionDate() {
+		return productionDate;
+	}
+	public void setProductionDate(String productionDate) {
+		this.productionDate = productionDate;
+	}
+	public String getStorage() {
+		return storage;
+	}
+	public void setStorage(String storage) {
+		this.storage = storage;
+	}
+	
+	
 }

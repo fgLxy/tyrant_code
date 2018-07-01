@@ -127,7 +127,7 @@ public class SqlResolver {
 				builder.append(",");
 			}
 		}
-		builder.append(" where id=").append(params.get("id"));
+		builder.append(" where id='").append(params.get("id")).append("'");
 		builder.append(valueBuilder.toString());
 		return builder.toString();
 	}

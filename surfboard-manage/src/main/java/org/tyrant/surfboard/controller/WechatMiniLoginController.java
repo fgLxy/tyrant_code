@@ -17,7 +17,6 @@ import org.tyrant.core.utils.JSONUtils;
 import org.tyrant.surfboard.consts.RetCodeConstants;
 import org.tyrant.surfboard.dto.AuthInfo;
 import org.tyrant.surfboard.service.AuthService;
-import org.tyrant.surfboard.utils.CookieUtils;
 import org.tyrant.surfboard.utils.ResponseUtils;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
@@ -89,7 +88,6 @@ public class WechatMiniLoginController {
 	public Map<String, Object> info(String signature, String rawData,
 			String encryptedData, String iv) throws JsonProcessingException,
 			SQLException {
-		CookieUtils.addCookie("TEST", "testValue");
 		AuthInfo auth = authService.getAuthInfo();
 		log.info(
 				"=====>info接口开始.sessionKey:{},signature:{}.rawData:{},encryptedData:{},iv:{}",

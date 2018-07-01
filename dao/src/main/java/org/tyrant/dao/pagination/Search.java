@@ -147,7 +147,9 @@ public class Search {
 	
 	private String buildSearchSql() {
 		StringBuilder builder = new StringBuilder(searchSql);
-		builder.append(WHERE);
+		if (searchSql.toLowerCase().indexOf("where") < 0) {
+			builder.append(WHERE);
+		}
 		builder = appendList(builder, wheres, " ");
 		builder = appendOrder(builder);
 		builder.append(LIMIT).append(getPreRec()).append(",").append(pageSize);
@@ -174,7 +176,9 @@ public class Search {
 
 	private String buildCountSql() {
 		StringBuilder builder = new StringBuilder(countSql);
-		builder.append(WHERE);
+		if (countSql.toLowerCase().indexOf("where") < 0) {
+			builder.append(WHERE);
+		}
 		builder = appendList(builder, wheres, " ");
 		return builder.toString();
 	}

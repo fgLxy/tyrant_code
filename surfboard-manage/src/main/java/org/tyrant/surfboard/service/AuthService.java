@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
+import me.chanjar.weixin.mp.bean.result.WxMpOAuth2AccessToken;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -34,7 +37,7 @@ public class AuthService {
 	Idao dao;
 	@Autowired
 	JedisCommands jedisService;
-
+	
 	public AuthInfo auth(String openId, String sessionKey, String unionId) throws SQLException {
 		String token = UUID.randomUUID().toString();
 		CookieUtils.addCookie(DictConstants.COOKIE_TOKEN_KEY, token);
@@ -151,6 +154,17 @@ public class AuthService {
 			return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * pc端登陆鉴权
+	 * @param wxUser
+	 * @param accessToken
+	 * @return
+	 */
+	public AuthInfo auth(WxMpUser wxUser, WxMpOAuth2AccessToken accessToken) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

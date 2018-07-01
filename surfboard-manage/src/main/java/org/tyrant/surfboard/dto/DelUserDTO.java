@@ -1,14 +1,16 @@
 package org.tyrant.surfboard.dto;
 
 public class DelUserDTO {
-	private String userId;
+	private String id;
 
-	public String getUserId() {
-		return userId;
+	public String getId() {
+		return id;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setId(String id) {
+		this.id = id;
 	}
+
+	
 	
 }

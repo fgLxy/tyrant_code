@@ -7,6 +7,9 @@ public class UserEntity implements BaseEntity {
 	private String unionId;
 	private String name;
 	private String phoneNumber;
+	private String storage;
+	private String groupName;
+	private String joinTime;
 	public String getId() {
 		return id;
 	}
@@ -31,5 +34,22 @@ public class UserEntity implements BaseEntity {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+	public String getStorage() {
+		return storage;
+	}
+	public void setStorage(String storage) {
+		this.storage = storage;
+	}
+	public String getGroupName() {
+		return groupName;
+	}
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	public String getJoinTime() {
+		return joinTime;
+	}
+	public void setJoinTime(String joinTime) {
+		this.joinTime = joinTime;
+	}
 }

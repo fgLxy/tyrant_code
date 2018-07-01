@@ -17,4 +17,6 @@ public class RetCodeConstants {
 	public static final int NO_POWER = 10006;
 	//登陆失效
 	public static final int SESSION_TIMEOUT = 10007;
+	//用户拒绝授权
+	public static final int REJECT_AUTH = 10008;
 }

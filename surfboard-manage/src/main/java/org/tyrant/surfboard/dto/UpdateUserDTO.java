@@ -1,11 +1,18 @@
 package org.tyrant.surfboard.dto;
 
-public class AddUserDTO {
+public class UpdateUserDTO {
+	private String id;
 	private String name;
 	private String storage;
 	private String groupName;
 	private String phoneNumber;
 	private String joinTime;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -36,5 +43,4 @@ public class AddUserDTO {
 	public void setJoinTime(String joinTime) {
 		this.joinTime = joinTime;
 	}
-	
 }

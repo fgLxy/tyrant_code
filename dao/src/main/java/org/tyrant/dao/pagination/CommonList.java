@@ -1,6 +1,9 @@
 package org.tyrant.dao.pagination;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class CommonList<T> {
 	//当前条数

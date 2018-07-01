@@ -1,13 +1,6 @@
 package org.tyrant.surfboard.entity;
 
-import org.tyrant.dao.BaseEntity;
-
-/**
- * 产品/菜单
- * @author xiaoyangliu
- *
- */
-public class ProductEntity implements BaseEntity {
+public class StorageEntity {
 	private String name;
 
 	public String getName() {
