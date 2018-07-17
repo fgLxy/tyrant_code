@@ -2,8 +2,10 @@ package org.tyrant.core.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -61,6 +63,14 @@ public class DateUtils {
 	public static boolean isPassHalfDay(String dateStr, String pattern) {
 		LocalDateTime time = LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern(pattern));
 		return time.getHour() > 12;
+	}
+	/**
+	 * 获取今天0点0分0秒时的时间戳
+	 * @return
+	 */
+	public static long currentDateTimestamp() {
+		LocalDate date = LocalDate.now();
+		return date.atTime(0, 0, 0).toInstant(ZoneOffset.of("+8")).toEpochMilli();
 	}
 
 }
