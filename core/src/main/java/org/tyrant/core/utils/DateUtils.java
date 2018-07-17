@@ -1,26 +1,66 @@
 package org.tyrant.core.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 public class DateUtils {
 
 	public static String currentTimeString() {
-		LocalDateTime datetime = LocalDateTime.now();
-		return DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(datetime);
+		return currentDateTime("yyyy-MM-dd HH:mm:ss");
 	}
-
-	public static long currentDateTimestamp() {
-		LocalDate date = LocalDate.now();
-		return date.atTime(0, 0, 0).toInstant(ZoneOffset.of("+8")).toEpochMilli();
-	}
-
+	
 	public static String currentDateTime(String pattern) {
 		return new SimpleDateFormat(pattern).format(new Date());
+	}
+
+	public static int subDayByDay(String beginTime, String endTime, String pattern, LocalTime daySplit) {
+		daySplit = daySplit == null ? LocalTime.MIN : daySplit;
+		LocalDateTime begin = LocalDateTime.parse(beginTime, DateTimeFormatter.ofPattern(pattern));
+		LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern(pattern));
+		begin = begin.minusNanos(daySplit.toNanoOfDay());
+		end = end.minusNanos(daySplit.toNanoOfDay());
+		begin = begin.withHour(0).withMinute(0).withSecond(0).withNano(0);
+		end = end.withHour(0).withMinute(0).withSecond(0).withNano(0);
+		return (int) begin.until(end, ChronoUnit.DAYS);
+	}
+
+	public static int subDayByDay(String beginTime, String endTime, String pattern) {
+		return subDayByDay(beginTime, endTime, pattern, null);
+	}
+
+	public static int subHourByTimestamp(String beginTime, String endTime, String pattern) {
+		LocalDateTime begin = LocalDateTime.parse(beginTime, DateTimeFormatter.ofPattern(pattern));
+		LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern(pattern));
+		return (int) begin.until(end, ChronoUnit.HOURS);
+	}
+	
+	public static int subMinutesByTimestamp(String beginTime, String endTime, String pattern) {
+		LocalDateTime begin = LocalDateTime.parse(beginTime, DateTimeFormatter.ofPattern(pattern));
+		LocalDateTime end = LocalDateTime.parse(endTime, DateTimeFormatter.ofPattern(pattern));
+		return (int) begin.until(end, ChronoUnit.MINUTES);
+	}
+	
+	public static Date parseDate(String dateStr, String pattern) {
+		try {
+			return new SimpleDateFormat(pattern).parse(dateStr);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean isPassHalfHour(String dateStr, String pattern) {
+		LocalDateTime time = LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern(pattern));
+		return time.getMinute() > 30;
+	}
+
+	public static boolean isPassHalfDay(String dateStr, String pattern) {
+		LocalDateTime time = LocalDateTime.parse(dateStr, DateTimeFormatter.ofPattern(pattern));
+		return time.getHour() > 12;
 	}
 
 }
