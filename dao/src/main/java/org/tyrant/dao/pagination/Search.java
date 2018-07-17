@@ -79,6 +79,25 @@ public class Search {
 		params.add(param);
 		return this;
 	}
+
+	/**
+	 * 添加查询条件
+	 * @param operation 指定是and还是or
+	 * @param property 指定查询的字段，例如name=?
+	 * @param params 要注入的参数数组
+	 * @return
+	 */
+	public Search addWhere(AndOr operation, String property, Object... params) {
+		Assert.notNull(property, "查询条件不能为空");
+		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		if (params != null && params.length > 0) {
+			for (Objecrt param : params) {
+				params.add(param);
+			}
+		}
+		return this;
+	}
+
 	/**
 	 * 添加排序条件
 	 * @param operation
