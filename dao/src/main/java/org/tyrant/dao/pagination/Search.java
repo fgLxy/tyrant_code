@@ -87,11 +87,11 @@ public class Search {
 	 * @param params 要注入的参数数组
 	 * @return
 	 */
-	public Search addWhere(AndOr operation, String property, Object... params) {
+	public Search addWhere(AndOr operation, String property, Object... paramArr) {
 		Assert.notNull(property, "查询条件不能为空");
 		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
-		if (params != null && params.length > 0) {
-			for (Objecrt param : params) {
+		if (paramArr != null && paramArr.length > 0) {
+			for (Object param : paramArr) {
 				params.add(param);
 			}
 		}
