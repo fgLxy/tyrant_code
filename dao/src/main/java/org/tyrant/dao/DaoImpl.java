@@ -38,13 +38,13 @@ public class DaoImpl implements Idao {
 	 * @return
 	 */
 	@Override
-	public <T extends BaseEntity> int insert(T object, String tableName) throws SQLException {
+	public <T> int insert(T object, String tableName) throws SQLException {
 		SqlResolver resolver = new SqlResolver(object, tableName);
 		return runner.update(resolver.insertSql(), resolver.paramValues());
 	}
 
 	@Override
-	public <T extends BaseEntity> long insertAndGetId(T object, String tableName)
+	public <T> long insertAndGetId(T object, String tableName)
 			throws SQLException {
 		insert(object, tableName);
 		String sql = "select last_insert_id()";
@@ -104,15 +104,15 @@ public class DaoImpl implements Idao {
 	 * @throws SQLException
 	 */
 	@Override
-	public <T extends BaseEntity> int update(T object, String tableName) throws SQLException {
-		Assert.notNull(object);
+	public <T> int update(T object, String tableName) throws SQLException {
+		Assert.notNull(object, "update data cannot null");
 		SqlResolver resolver = new SqlResolver(object, tableName);
 		return runner.update(resolver.updateSql(), resolver.paramValues());
 	}
 
 	@Override
-	public <T extends BaseEntity> int forceUpdate(T object, String tableName) throws SQLException {
-		Assert.notNull(object);
+	public <T> int forceUpdate(T object, String tableName) throws SQLException {
+		Assert.notNull(object, "update data cannot null");
 		SqlResolver resolver = new SqlResolver(object, tableName, false);
 		return runner.update(resolver.updateSql(), resolver.paramValues());
 	}

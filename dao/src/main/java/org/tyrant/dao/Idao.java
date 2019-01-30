@@ -10,9 +10,9 @@ import org.tyrant.dao.pagination.Search;
 
 public interface Idao {
 
-	<T extends BaseEntity> int insert(T object, String tableName) throws SQLException;
+	<T> int insert(T object, String tableName) throws SQLException;
 
-	<T extends BaseEntity> long insertAndGetId(T object, String tableName) throws SQLException;
+	<T> long insertAndGetId(T object, String tableName) throws SQLException;
 
 	<T> int[] batchInsert(List<T> objects, String tableName)
 			throws SQLException;
@@ -21,9 +21,9 @@ public interface Idao {
 
 	int update(String sql, Object... paramValues) throws SQLException;
 
-	<T extends BaseEntity> int forceUpdate(T object, String tableName) throws SQLException;
+	<T> int forceUpdate(T object, String tableName) throws SQLException;
 
-	<T extends BaseEntity> int update(T object, String tableName) throws SQLException;
+	<T> int update(T object, String tableName) throws SQLException;
 
 	<T> int[] batchUpdate(T object, String tableName, int[] ids)
 			throws SQLException;
