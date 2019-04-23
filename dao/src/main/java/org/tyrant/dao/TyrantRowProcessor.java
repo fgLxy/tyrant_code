@@ -22,7 +22,12 @@ public class TyrantRowProcessor extends BasicRowProcessor {
 		Map<String, Object> result = super.toMap(rs);
 		Map<String, Object> newResult = new HashMap<>();
 		for (Entry<String, Object> entry : result.entrySet()) {
-			newResult.put(NameUtils.underlineToCamel(entry.getKey()), entry.getValue());
+			if ("status".equals(entry.getKey()) && entry.getValue() instanceof Boolean) {
+				newResult.put(NameUtils.underlineToCamel(entry.getKey()), (boolean) entry.getValue() ? 0 : 1);
+			}
+			else {
+				newResult.put(NameUtils.underlineToCamel(entry.getKey()), entry.getValue());
+			}
 		}
         return newResult;
     }
