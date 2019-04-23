@@ -22,7 +22,13 @@ public class ListMapHandler implements
 		while (rs.next()) {
 			Map<String, Object> map = new HashMap<>();
 			for (int i = 0; i < count; i++) {
-				map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), rs.getObject(i + 1));
+				Object value = rs.getObject(i + 1);
+				if ("status".equals(metaData.getColumnName(i + 1)) && value instanceof Boolean) {
+					map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), (boolean) value ? 0 : 1);
+				}
+				else {
+					map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), value);
+				}
 			}
 			rtn.add(map);
 		}
