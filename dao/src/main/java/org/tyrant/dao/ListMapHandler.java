@@ -24,7 +24,7 @@ public class ListMapHandler implements
 			for (int i = 0; i < count; i++) {
 				Object value = rs.getObject(i + 1);
 				if ("status".equals(metaData.getColumnName(i + 1)) && value instanceof Boolean) {
-					map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), (boolean) value ? 0 : 1);
+					map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), (boolean) value ? 1 : 0);
 				}
 				else {
 					map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), value);
