@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.dbutils.ResultSetHandler;
+import org.tyrant.core.utils.NameUtils;
 
 public class ListMapHandler implements
 		ResultSetHandler<List<Map<String, Object>>> {
@@ -21,7 +22,7 @@ public class ListMapHandler implements
 		while (rs.next()) {
 			Map<String, Object> map = new HashMap<>();
 			for (int i = 0; i < count; i++) {
-				map.put(metaData.getColumnName(i + 1), rs.getObject(i + 1));
+				map.put(NameUtils.underlineToCamel(metaData.getColumnName(i + 1)), rs.getObject(i + 1));
 			}
 			rtn.add(map);
 		}
