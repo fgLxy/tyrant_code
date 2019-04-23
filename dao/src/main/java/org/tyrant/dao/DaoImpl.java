@@ -28,7 +28,7 @@ public class DaoImpl implements Idao {
 	@Qualifier("transactionQueryRunner")
 	QueryRunner runner;
 
-	static BasicRowProcessor DEFAULT_ROW_PROCESSOR = new BasicRowProcessor(
+	static BasicRowProcessor DEFAULT_ROW_PROCESSOR = new TyrantRowProcessor(
 			new BeanProcessor(new UnderlineToCamelMap()));
 
 	/**
