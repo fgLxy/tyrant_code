@@ -251,10 +251,10 @@ public class Search {
 				builder.append(" and (1=1 ");
 				builder = appendList(builder, entry.getValue(), " ");
 				builder.append(") ");
-				List<Object> groupParams = this.groupParams.get(entry.getKey());
 			}
 		}
-		return null;
+		this.where = builder.toString();
+		return this.where;
 	}
 
 	/**
