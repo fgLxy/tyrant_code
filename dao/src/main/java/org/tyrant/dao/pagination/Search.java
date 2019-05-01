@@ -1,5 +1,7 @@
 package org.tyrant.dao.pagination;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +40,8 @@ public class Search {
 	private String countSql;
 	//记录查询条件
 	private List<String> wheres;
+	//分组查询条件
+	private Map<String, List<String>> groupWhere;
 	//需要注入的参数
 	private List<Object> params;
 	//记录排序条件 Map<字段，排序方式>
@@ -53,6 +57,7 @@ public class Search {
 		this.orders = new LinkedHashMap<>();
 		this.pageNo = DEFAULT_PAGE_NO;
 		this.pageSize = DEFAULT_PAGE_SIZE;
+		this.groupWhere = new HashMap<>();
 	}
 	
 	/**
@@ -66,6 +71,17 @@ public class Search {
 		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
 		return this;
 	}
+	
+	public Search addGroupWhere(String groupId, AndOr operation, String property) {
+		List<String> wheres = this.groupWhere.get(groupId);
+		if (wheres == null) {
+			wheres = new ArrayList<>();
+			this.groupWhere.put(groupId, wheres);
+		}
+		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		return this;
+	}
+	
 	/**
 	 * 添加查询条件
 	 * @param operation 指定是and还是or
@@ -170,6 +186,13 @@ public class Search {
 			builder.append(WHERE);
 		}
 		builder = appendList(builder, wheres, " ");
+		if (!this.groupWhere.isEmpty()) {
+			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
+				builder.append(" and (");
+				builder = appendList(builder, entry.getValue(), " ");
+				builder.append(") ");
+			}
+		}
 		builder = appendOrder(builder);
 		builder.append(LIMIT).append(getPreRec()).append(",").append(pageSize);
 		return builder.toString();
@@ -199,6 +222,13 @@ public class Search {
 			builder.append(WHERE);
 		}
 		builder = appendList(builder, wheres, " ");
+		if (!this.groupWhere.isEmpty()) {
+			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
+				builder.append(" and (");
+				builder = appendList(builder, entry.getValue(), " ");
+				builder.append(") ");
+			}
+		}
 		return builder.toString();
 	}
 	
