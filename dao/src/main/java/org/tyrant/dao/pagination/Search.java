@@ -84,7 +84,9 @@ public class Search {
 		List<String> wheres = this.groupWhere.get(groupId);
 		if (wheres == null) {
 			wheres = new ArrayList<>();
+			params = new ArrayList<>();
 			this.groupWhere.put(groupId, wheres);
+			this.groupParams.put(groupId, params);
 		}
 		if (wheres.isEmpty()) {
 			wheres.add(AND_STR + property);
