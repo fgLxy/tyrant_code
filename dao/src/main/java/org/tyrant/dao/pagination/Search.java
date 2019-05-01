@@ -52,6 +52,8 @@ public class Search {
 	//页长
 	private Integer pageSize;
 	
+	private String where;
+	
 	public Search() {
 		this.wheres = new LinkedList<>();
 		this.params = new LinkedList<>();
@@ -70,7 +72,11 @@ public class Search {
 	 */
 	public Search addWhere(AndOr operation, String property) {
 		Assert.notNull(property, "查询条件不能为空");
-		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		if (wheres.isEmpty()) {
+			wheres.add(AND_STR + property);
+		} else {
+			wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		}
 		return this;
 	}
 	
@@ -80,7 +86,11 @@ public class Search {
 			wheres = new ArrayList<>();
 			this.groupWhere.put(groupId, wheres);
 		}
-		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		if (wheres.isEmpty()) {
+			wheres.add(AND_STR + property);
+		} else {
+			wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		}
 		return this;
 	}
 	
@@ -93,7 +103,11 @@ public class Search {
 	 */
 	public Search addWhere(AndOr operation, String property, Object param) {
 		Assert.notNull(property, "查询条件不能为空");
-		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		if (wheres.isEmpty()) {
+			wheres.add(AND_STR + property);
+		} else {
+			wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		}
 		params.add(param);
 		return this;
 	}
@@ -107,7 +121,11 @@ public class Search {
 			this.groupWhere.put(groupId, wheres);
 			this.groupParams.put(groupId, params);
 		}
-		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		if (wheres.isEmpty()) {
+			wheres.add(AND_STR + property);
+		} else {
+			wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		}
 		params.add(param);
 		return this;
 	}
@@ -121,7 +139,11 @@ public class Search {
 	 */
 	public Search addWhere(AndOr operation, String property, Object... paramArr) {
 		Assert.notNull(property, "查询条件不能为空");
-		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		if (wheres.isEmpty()) {
+			wheres.add(AND_STR + property);
+		} else {
+			wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		}
 		if (paramArr != null && paramArr.length > 0) {
 			for (Object param : paramArr) {
 				params.add(param);
@@ -197,27 +219,44 @@ public class Search {
 	}
 	
 	private String buildSearchSql() {
+		init();
 		StringBuilder builder = new StringBuilder(searchSql);
 		if (searchSql.toLowerCase().indexOf("where") < 0) {
 			builder.append(WHERE);
 		}
-		builder = appendList(builder, wheres, " ");
-		if (!this.groupWhere.isEmpty()) {
-			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
-				builder.append(" and (");
-				builder.append(WHERE);
-				builder = appendList(builder, entry.getValue(), " ");
-				builder.append(") ");
-				List<Object> groupParams = this.groupParams.get(entry.getKey());
-				this.params.addAll(groupParams);
-				groupParams.clear();
-			}
-		}
+		builder.append(buildWhere());
 		builder = appendOrder(builder);
 		builder.append(LIMIT).append(getPreRec()).append(",").append(pageSize);
 		return builder.toString();
 	}
 	
+	private void init() {
+		if (!this.groupWhere.isEmpty()) {
+			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
+				List<Object> groupParams = this.groupParams.get(entry.getKey());
+				this.params.addAll(groupParams);
+				groupParams.clear();
+			}
+		}
+	}
+
+	private String buildWhere() {
+		if (this.where != null && this.where.trim().equals("")) {
+			return this.where;
+		}
+		StringBuilder builder = new StringBuilder();
+		builder = appendList(builder, wheres, " ");
+		if (!this.groupWhere.isEmpty()) {
+			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
+				builder.append(" and (1=1 ");
+				builder = appendList(builder, entry.getValue(), " ");
+				builder.append(") ");
+				List<Object> groupParams = this.groupParams.get(entry.getKey());
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * 拼接排序条件
 	 * @param builder
@@ -237,18 +276,12 @@ public class Search {
 	}
 
 	private String buildCountSql() {
+		init();
 		StringBuilder builder = new StringBuilder(countSql);
 		if (countSql.toLowerCase().indexOf("where") < 0) {
 			builder.append(WHERE);
 		}
-		builder = appendList(builder, wheres, " ");
-		if (!this.groupWhere.isEmpty()) {
-			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
-				builder.append(" and (");
-				builder = appendList(builder, entry.getValue(), " ");
-				builder.append(") ");
-			}
-		}
+		builder.append(buildWhere());
 		return builder.toString();
 	}
 	
