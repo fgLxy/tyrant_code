@@ -1,7 +1,6 @@
 package org.tyrant.dao.pagination;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +41,8 @@ public class Search {
 	private List<String> wheres;
 	//分组查询条件
 	private Map<String, List<String>> groupWhere;
+	//需要注入的分组参数
+	private Map<String, List<Object>> groupParams;
 	//需要注入的参数
 	private List<Object> params;
 	//记录排序条件 Map<字段，排序方式>
@@ -57,7 +58,8 @@ public class Search {
 		this.orders = new LinkedHashMap<>();
 		this.pageNo = DEFAULT_PAGE_NO;
 		this.pageSize = DEFAULT_PAGE_SIZE;
-		this.groupWhere = new HashMap<>();
+		this.groupWhere = new LinkedHashMap<>();
+		this.groupParams = new LinkedHashMap<>();
 	}
 	
 	/**
@@ -91,6 +93,20 @@ public class Search {
 	 */
 	public Search addWhere(AndOr operation, String property, Object param) {
 		Assert.notNull(property, "查询条件不能为空");
+		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
+		params.add(param);
+		return this;
+	}
+	
+	public Search addGroupWhere(String groupId, AndOr operation, String property, Object param) {
+		List<String> wheres = this.groupWhere.get(groupId);
+		List<Object> params = this.groupParams.get(groupId);
+		if (wheres == null) {
+			wheres = new ArrayList<>();
+			params = new ArrayList<>();
+			this.groupWhere.put(groupId, wheres);
+			this.groupParams.put(groupId, params);
+		}
 		wheres.add((operation.equals(AndOr.AND) ? AND_STR : OR_STR) + property);
 		params.add(param);
 		return this;
@@ -191,6 +207,9 @@ public class Search {
 				builder.append(" and (");
 				builder = appendList(builder, entry.getValue(), " ");
 				builder.append(") ");
+				List<Object> groupParams = this.groupParams.get(entry.getKey());
+				this.params.addAll(groupParams);
+				groupParams.clear();
 			}
 		}
 		builder = appendOrder(builder);
