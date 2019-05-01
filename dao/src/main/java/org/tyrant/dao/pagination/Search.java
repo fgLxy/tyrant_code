@@ -205,6 +205,7 @@ public class Search {
 		if (!this.groupWhere.isEmpty()) {
 			for (Entry<String, List<String>> entry : this.groupWhere.entrySet()) {
 				builder.append(" and (");
+				builder.append(WHERE);
 				builder = appendList(builder, entry.getValue(), " ");
 				builder.append(") ");
 				List<Object> groupParams = this.groupParams.get(entry.getKey());
